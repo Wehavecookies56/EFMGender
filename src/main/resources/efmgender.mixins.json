@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "wehavecookies56.efmgender.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "efmgender.refmap.json",
+  "mixins": [],
+  "client": [
+    "PHumanoidRendererMixin",
+    "FirstPersonRendererMixin"
+  ],
+  "minVersion": "0.8"
+}
