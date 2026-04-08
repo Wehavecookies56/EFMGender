@@ -1,6 +1,6 @@
 package wehavecookies56.efmgender;
 
-import net.neoforged.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod;
 
 @Mod(EFMGender.MODID)
 public class EFMGender {

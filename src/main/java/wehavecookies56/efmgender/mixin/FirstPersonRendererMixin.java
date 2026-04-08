@@ -17,7 +17,7 @@ public class FirstPersonRendererMixin {
     @SuppressWarnings("all")
     @Inject(method = "<init>", at = @At("TAIL"))
     public void init(EntityRendererProvider.Context context, EntityType entityType, CallbackInfo ci) {
-        if (Config.RENDER_FIRST_PERSON.getAsBoolean()) {
+        if (Config.renderFirstPerson) {
             FirstPersonRenderer thisOne = ((FirstPersonRenderer) (Object) this);
             thisOne.addPatchedLayer(GenderLayer.class, new PatchedGenderLayerRenderer(true));
         }

@@ -1,18 +1,20 @@
 package wehavecookies56.efmgender;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.wildfire.main.entitydata.EntityConfig;
-import com.wildfire.render.GenderLayer;
-import net.minecraft.client.model.HumanoidModel;
+import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.WildfireGender;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.client.renderer.patched.layer.PatchedLayer;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-public class PatchedGenderLayerRenderer<E extends LivingEntity, T extends LivingEntityPatch<E>, M extends HumanoidModel<E>> extends PatchedLayer<E, T, M, GenderLayer<E, M>> {
+public class PatchedGenderLayerRenderer<E extends AbstractClientPlayer, T extends LivingEntityPatch<E>, M extends PlayerModel<E>> extends PatchedLayer<E, T, M, RenderLayer<E, M>> {
 
     boolean isFirstPerson;
 
@@ -21,8 +23,8 @@ public class PatchedGenderLayerRenderer<E extends LivingEntity, T extends Living
     }
 
     @Override
-    protected void renderLayer(T entitypatch, E livingentity, GenderLayer<E, M> vanillaLayer, PoseStack poseStack, MultiBufferSource buffer, int packedLight, OpenMatrix4f[] poses, float bob, float yRot, float xRot, float partialTicks) {
-        EntityConfig config = EntityConfig.getEntity(livingentity);
+    protected void renderLayer(T t, E livingentity, @Nullable RenderLayer<E, M> emGenderLayer, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, OpenMatrix4f[] openMatrix4fs, float v, float v1, float v2, float v3) {
+        GenderPlayer config = WildfireGender.getPlayerById(livingentity.getUUID());
         if (config.getGender().canHaveBreasts()) {
             float breastOffsetX = 0;
             float breastOffsetY = -0.7F;
@@ -32,10 +34,10 @@ public class PatchedGenderLayerRenderer<E extends LivingEntity, T extends Living
                 breastOffsetZ -= 0.15F;
             }
             OpenMatrix4f modelMatrix = new OpenMatrix4f();
-            modelMatrix.scale(new Vec3f(-1F, -1F, 1F)).translate(new Vec3f(breastOffsetX, breastOffsetY, breastOffsetZ)).mulFront(poses[7]);
+            modelMatrix.scale(new Vec3f(-1F, -1F, 1F)).translate(new Vec3f(breastOffsetX, breastOffsetY, breastOffsetZ)).mulFront(openMatrix4fs[7]);
             poseStack.pushPose();
             MathUtils.mulStack(poseStack, modelMatrix);
-            vanillaLayer.render(poseStack, buffer, packedLight, livingentity, livingentity.walkAnimation.position(), livingentity.walkAnimation.speed(), partialTicks, bob, yRot, xRot);
+            emGenderLayer.render(poseStack, multiBufferSource, i, livingentity, livingentity.walkAnimation.position(), livingentity.walkAnimation.speed(), v3, v, v1, v2);
             poseStack.popPose();
         }
     }
